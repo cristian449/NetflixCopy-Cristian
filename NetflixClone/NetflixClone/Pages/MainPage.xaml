@@ -116,7 +116,6 @@
             </VerticalStackLayout>
 
         </ScrollView>
-
         <Grid HeightRequest="35"
               VerticalOptions="Start">
 
@@ -141,6 +140,9 @@
             </FlexLayout>
 
         </Grid>
+
+        <controls:MoveInfoBox Media="{Binding SelectedMedia}"
+                              VerticalOptions="End"/>
     </Grid>
 
 </ContentPage>
