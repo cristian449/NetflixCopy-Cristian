@@ -5,6 +5,7 @@
              Shell.NavBarIsVisible="False"
              BackgroundColor="Black"
              xmlns:vm="clr-namespace:NetflixClone.ViewModels"
+             xmlns:controls="clr-namespace:NetflixClone.Controls"
              x:DataType="vm:HomeViewModel">
 
 
@@ -98,6 +99,20 @@
                     </HorizontalStackLayout>
 
                 </Grid>
+
+                <controls:MovieRow Heading="Top Rated"
+                                   Movies="{Binding TopRated}"
+                                   IsLarge="False" />
+                <controls:MovieRow Heading="Originals"
+                                   Movies="{Binding NetflixOriginals}"
+                                   IsLarge="False" />
+                <controls:MovieRow Heading="Trending"
+                                   Movies="{Binding Trending}"
+                                   IsLarge="False" />
+                <controls:MovieRow Heading="Action"
+                                   Movies="{Binding ActionMovies}"
+                                   IsLarge="False" />
+
             </VerticalStackLayout>
 
         </ScrollView>
