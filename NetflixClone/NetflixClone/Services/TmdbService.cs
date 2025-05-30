@@ -22,6 +22,12 @@ namespace NetflixClone.Services
 
         private HttpClient HttpClient => _httpClientFactory.CreateClient(TmdbHttpClientName);
 
+        public async Task<IEnumerable<Genre>> GetGenresAsync()
+        {
+            var genresWrapper = await HttpClient.GetFromJsonAsync<GenreWrapper>($"{TmdbUrls.MovieGenres}&api_key={ApiKey}");
+            return genresWrapper.Genres;
+        }   
+
         public async Task<IEnumerable<Media>> GetTrendingAsync() =>
             await GetMediasAsync(TmdbUrls.Trending);
 
@@ -48,8 +54,9 @@ namespace NetflixClone.Services
             public const string NetflixOriginals = "3/discover/tv?language=en-US&with_networks=213";
             public const string TopRated = "3/movie/top_rated?language=en-US";
             public const string Action = "3/discover/movie?language=en-US&with_genres=28";
+            public const string MovieGenres = "3/genre/movie/list?language=en-US";
 
-            public static string GetTrailers(int movieId, string type = "movie") => $"3/{type ?? "movie"}/{movieId}/videos?language=en-US";
+        public static string GetTrailers(int movieId, string type = "movie") => $"3/{type ?? "movie"}/{movieId}/videos?language=en-US";
             public static string GetMovieDetails(int movieId, string type = "movie") => $"3/{type ?? "movie"}/{movieId}?language=en-US";
             public static string GetSimilar(int movieId, string type = "movie") => $"3/{type ?? "movie"}/{movieId}/similar?language=en-US";
         }

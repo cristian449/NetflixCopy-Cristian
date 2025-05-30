@@ -31,4 +31,9 @@ public partial class MainPage : ContentPage
     {
         _homeViewModel.SelectMediaCommand.Execute(null);
     }
+
+    private async void TapGestureRecognizer_Tapped(object sender, TappedEventArgs e)
+    {
+        await Shell.Current.GoToAsync(nameof(CategoriesPage));
+    }
 }

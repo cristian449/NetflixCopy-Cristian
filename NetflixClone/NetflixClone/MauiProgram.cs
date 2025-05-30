@@ -31,6 +31,9 @@ namespace NetflixClone
             builder.Services.AddSingleton<HomeViewModel>();
             builder.Services.AddSingleton<MainPage>();
 
+            builder.Services.AddSingleton<CategoriesPage>();
+            builder.Services.AddTransient<CategoriesViewModel>();
+
 
             return builder.Build();
         }
