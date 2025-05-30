@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using NetflixClone.Models;
 using NetflixClone.Services;
 
@@ -17,7 +18,11 @@ namespace NetflixClone.ViewModels
         private Media _trendingMovie;
 
         [ObservableProperty]
-        private Media _selectedMedia;
+        [NotifyPropertyChangedFor(nameof(ShowMovieInfoBox))]
+        private Media? _selectedMedia;
+
+        public bool ShowMovieInfoBox => SelectedMedia is not null;
+
 
         public ObservableCollection<Media> Trending { get; set; } = new();
         public ObservableCollection<Media> TopRated { get; set; } = new();
@@ -52,7 +57,7 @@ namespace NetflixClone.ViewModels
             SetMediaCollection(topRatedList, TopRated);
             SetMediaCollection(actionList, ActionMovies);
 
-            SelectedMedia = TrendingMovie;
+            //SelectedMedia = TrendingMovie;
         }
 
         private static void SetMediaCollection(IEnumerable<Media> medias, ObservableCollection<Media> collection)
@@ -63,6 +68,22 @@ namespace NetflixClone.ViewModels
                 collection.Add(media);
             }
         }
-    }
 
+        [RelayCommand]
+        private void SelectMedia(Media? media = null)
+        {
+            if (media is not null)
+            {
+                if (media.Id == SelectedMedia?.Id)
+                {
+                    media = null;
+                }
+                
+            }
+            SelectedMedia = media;
+
+
+        }
+
+    }
 }
