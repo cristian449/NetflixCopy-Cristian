@@ -26,7 +26,7 @@ namespace NetflixClone.Services
         {
             var genresWrapper = await HttpClient.GetFromJsonAsync<GenreWrapper>($"{TmdbUrls.MovieGenres}&api_key={ApiKey}");
             return genresWrapper.Genres;
-        }   
+        }
 
         public async Task<IEnumerable<Media>> GetTrendingAsync() =>
             await GetMediasAsync(TmdbUrls.Trending);
@@ -38,15 +38,28 @@ namespace NetflixClone.Services
         public async Task<IEnumerable<Media>> GetActionAsync() =>
             await GetMediasAsync(TmdbUrls.Action);
 
-        private async Task<IEnumerable<Media>> GetMediasAsync (string url)
+        public async Task<IEnumerable<Video>?> GetTrailersAsync(int id, string type = "movie")
+        {
+            var videosWrapper = await HttpClient.GetFromJsonAsync<VideosWrapper>(
+                $"{TmdbUrls.GetTrailers(id, type)}&api_key={ApiKey}");
+
+            if (videosWrapper?.results?.Length > 0)
+            {
+                var trailerTeasers = videosWrapper.results.Where(VideosWrapper.FilterTrailerTeasers);
+                return trailerTeasers;
+            }
+            return null;
+        }
+
+        private async Task<IEnumerable<Media>> GetMediasAsync(string url)
         {
             var trendingMoviesCollection = await HttpClient.GetFromJsonAsync<Movie>($"{url}&api_key={ApiKey}");
             return trendingMoviesCollection.results
                     .Select(r => r.ToMediaObject());
         }
-        
 
-    }
+
+
 
         public static class TmdbUrls
         {
@@ -56,7 +69,7 @@ namespace NetflixClone.Services
             public const string Action = "3/discover/movie?language=en-US&with_genres=28";
             public const string MovieGenres = "3/genre/movie/list?language=en-US";
 
-        public static string GetTrailers(int movieId, string type = "movie") => $"3/{type ?? "movie"}/{movieId}/videos?language=en-US";
+            public static string GetTrailers(int movieId, string type = "movie") => $"3/{type ?? "movie"}/{movieId}/videos?language=en-US";
             public static string GetMovieDetails(int movieId, string type = "movie") => $"3/{type ?? "movie"}/{movieId}?language=en-US";
             public static string GetSimilar(int movieId, string type = "movie") => $"3/{type ?? "movie"}/{movieId}/similar?language=en-US";
         }
@@ -90,7 +103,7 @@ namespace NetflixClone.Services
             public string DisplayTitle => title ?? name ?? original_title ?? original_name;
 
             public Media ToMediaObject() =>
-                new ()
+                new()
                 {
                     Id = id,
                     DisplayTitle = DisplayTitle,
@@ -184,4 +197,5 @@ namespace NetflixClone.Services
         }
         public record struct Genre(int Id, string Name);
     }
+}
 

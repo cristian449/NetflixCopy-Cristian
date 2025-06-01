@@ -21,7 +21,7 @@ namespace NetflixClone
                 });
 
 #if DEBUG
-    		builder.Logging.AddDebug();
+            builder.Logging.AddDebug();
 #endif
 
             builder.Services.AddHttpClient(TmdbService.TmdbHttpClientName,
@@ -33,6 +33,8 @@ namespace NetflixClone
 
             builder.Services.AddSingleton<CategoriesPage>();
             builder.Services.AddTransient<CategoriesViewModel>();
+
+            builder.Services.AddTransientWithShellRoute<DetailsPage, DetailsViewModel>(nameof(DetailsPage));
 
 
             return builder.Build();

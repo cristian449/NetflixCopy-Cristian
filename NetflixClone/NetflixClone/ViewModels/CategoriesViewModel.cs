@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using NetflixClone.Services;
+using static NetflixClone.Services.TmdbService;
 
 namespace NetflixClone.ViewModels
 {
