@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http.Json;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Net.Http.Json;
 using NetflixClone.Models;
 
 namespace NetflixClone.Services
@@ -38,6 +33,7 @@ namespace NetflixClone.Services
         public async Task<IEnumerable<Media>> GetActionAsync() =>
             await GetMediasAsync(TmdbUrls.Action);
 
+
         public async Task<IEnumerable<Video>?> GetTrailersAsync(int id, string type = "movie")
         {
             var videosWrapper = await HttpClient.GetFromJsonAsync<VideosWrapper>(
@@ -50,6 +46,11 @@ namespace NetflixClone.Services
             }
             return null;
         }
+
+        public async Task<MovieDetail> GetMediaDetailsAsync(int id, string type = "movie") =>
+            await HttpClient.GetFromJsonAsync<MovieDetail>(
+                $"{TmdbUrls.GetMovieDetails(id, type)}&api_key={ApiKey}");
+
 
         private async Task<IEnumerable<Media>> GetMediasAsync(string url)
         {
