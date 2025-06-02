@@ -12,6 +12,15 @@ public partial class DetailsPage : ContentPage
         BindingContext = _viewModel;
     }
 
+    protected override void OnSizeAllocated(double width, double height)
+    {
+        base.OnSizeAllocated(width, height);
+        if (width > 0)
+        {
+            _viewModel.SimilarItemWidth = Convert.ToInt32(width / 3) - 3;
+        }
+    }
+
     protected async override void OnAppearing()
     {
         base.OnAppearing();
